@@ -1,0 +1,24 @@
+:root {
+    --png-yellow: #f6eb24;
+    --png-orange: #fcb92e;
+    --png-black: #373435;
+    --png-white: #ffffff;
+    --png-muted: #6b7280;
+    --png-border: #e5e7eb;
+}
+
+body {
+    color: var(--png-black);
+}
+
+.png-site-section {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.png-placeholder {
+    border: 1px dashed var(--png-border);
+    padding: 24px;
+    margin-block: 24px;
+    background: #fff;
+}
