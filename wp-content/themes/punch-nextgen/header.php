@@ -1,59 +1,119 @@
 <?php
 /**
- * The header for our theme
- *
- * This is the template that displays all of the <head> section and everything up until <div id="content">
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package Punch_NextGen
+ * Punch NextGen header.
  */
 
-?>
-<!doctype html>
+?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
-	<meta charset="<?php bloginfo( 'charset' ); ?>">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="profile" href="https://gmpg.org/xfn/11">
-
-	<?php wp_head(); ?>
+    <meta charset="<?php bloginfo( 'charset' ); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'punch-nextgen' ); ?></a>
 
-	<header id="masthead" class="site-header">
-		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$punch_nextgen_description = get_bloginfo( 'description', 'display' );
-			if ( $punch_nextgen_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $punch_nextgen_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
+<a class="png-skip-link" href="#primary"><?php esc_html_e( 'Skip to content', 'punch-nextgen' ); ?></a>
 
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'punch-nextgen' ); ?></button>
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
-				)
-			);
-			?>
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
+<header class="png-header">
+    <div class="png-topbar">
+        <div class="png-container png-topbar__inner">
+            <span class="png-topbar__tag"><?php esc_html_e( 'Punch NextGen', 'punch-nextgen' ); ?></span>
+            <span class="png-topbar__text"><?php esc_html_e( 'News, learning and life skills for the next generation.', 'punch-nextgen' ); ?></span>
+        </div>
+    </div>
+
+    <div class="png-container png-header__main">
+        <a class="png-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+            <?php if ( has_custom_logo() ) : ?>
+                <span class="png-brand__logo"><?php the_custom_logo(); ?></span>
+            <?php else : ?>
+                <span class="png-brand__mark">PN</span>
+                <span class="png-brand__text">
+                    <strong>Punch</strong>
+                    <span>NextGen</span>
+                </span>
+            <?php endif; ?>
+        </a>
+
+        <button class="png-nav-toggle" type="button" aria-controls="png-primary-nav" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span class="screen-reader-text"><?php esc_html_e( 'Open menu', 'punch-nextgen' ); ?></span>
+        </button>
+
+        <nav id="png-primary-nav" class="png-primary-nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'punch-nextgen' ); ?>">
+            <?php
+            wp_nav_menu(
+                array(
+                    'theme_location' => 'primary',
+                    'container'      => false,
+                    'menu_class'     => 'png-primary-nav__list',
+                    'fallback_cb'    => function () {
+                        ?>
+                        <ul class="png-primary-nav__list">
+                            <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
+                            <li><a href="<?php echo esc_url( get_category_link( get_cat_ID( 'News' ) ) ); ?>">News</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'leaderboards', '/leaderboards/' ) ); ?>">Leaderboards</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'crack-this-lite', '/crack-this-lite/' ) ); ?>">Crack This Lite</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'teacher-guide-portal', '/teacher-guide-portal/' ) ); ?>">Teacher Guide</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'contact-feedback', '/contact-feedback/' ) ); ?>">Contact</a></li>
+                        </ul>
+                        <?php
+                    },
+                )
+            );
+            ?>
+        </nav>
+
+        <div class="png-header__actions">
+            <button class="png-search-toggle" type="button" aria-expanded="false" aria-controls="png-search-panel">
+                <?php esc_html_e( 'Search', 'punch-nextgen' ); ?>
+            </button>
+
+            <?php if ( is_user_logged_in() ) : ?>
+                <a class="png-btn png-btn--dark" href="<?php echo esc_url( png_theme_get_page_url( 'my-profile', '/my-profile/' ) ); ?>">
+                    <?php esc_html_e( 'My Profile', 'punch-nextgen' ); ?>
+                </a>
+            <?php else : ?>
+                <a class="png-btn png-btn--dark" href="<?php echo esc_url( wp_login_url() ); ?>">
+                    <?php esc_html_e( 'Login', 'punch-nextgen' ); ?>
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div id="png-search-panel" class="png-search-panel" hidden>
+        <div class="png-container">
+            <?php get_search_form(); ?>
+        </div>
+    </div>
+
+    <div class="png-category-strip">
+        <div class="png-container png-category-strip__inner">
+            <?php
+            $category_names = array(
+                'News',
+                'Culture & Trends',
+                'Campus & School Life',
+                'Money & Life Skills',
+                'Career & Opportunities',
+                'Sports',
+                'Opinion / Youth Voices',
+                'Myth vs Fact',
+                'Fact Check',
+            );
+
+            foreach ( $category_names as $category_name ) {
+                $term = get_term_by( 'name', $category_name, 'category' );
+
+                if ( $term && ! is_wp_error( $term ) ) {
+                    echo '<a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $category_name ) . '</a>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+</header>
