@@ -181,3 +181,95 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  * Punch NextGen theme additions.
  */
 require get_template_directory() . '/inc/nextgen-loader.php';
+
+/**
+ * Punch NextGen urgent UI layer.
+ * Handles the first production-ready header, footer, homepage and article UI assets.
+ */
+if ( ! function_exists( 'png_theme_urgent_asset_version' ) ) {
+    function png_theme_urgent_asset_version( $relative_path ) {
+        $file = get_template_directory() . '/' . ltrim( $relative_path, '/' );
+
+        if ( file_exists( $file ) ) {
+            return filemtime( $file );
+        }
+
+        return wp_get_theme()->get( 'Version' );
+    }
+}
+
+if ( ! function_exists( 'png_theme_urgent_setup' ) ) {
+    function png_theme_urgent_setup() {
+        add_theme_support( 'title-tag' );
+        add_theme_support( 'post-thumbnails' );
+        add_theme_support( 'custom-logo' );
+        add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
+
+        add_image_size( 'png_hero', 960, 560, true );
+        add_image_size( 'png_card', 520, 340, true );
+        add_image_size( 'png_thumb', 240, 160, true );
+
+        register_nav_menus(
+            array(
+                'primary'       => esc_html__( 'Primary Menu', 'punch-nextgen' ),
+                'category_menu' => esc_html__( 'Category Menu', 'punch-nextgen' ),
+                'footer_menu'   => esc_html__( 'Footer Menu', 'punch-nextgen' ),
+            )
+        );
+    }
+}
+add_action( 'after_setup_theme', 'png_theme_urgent_setup', 30 );
+
+if ( ! function_exists( 'png_theme_urgent_assets' ) ) {
+    function png_theme_urgent_assets() {
+        wp_enqueue_style(
+            'png-urgent-ui',
+            get_template_directory_uri() . '/assets/css/urgent-ui.css',
+            array(),
+            png_theme_urgent_asset_version( 'assets/css/urgent-ui.css' )
+        );
+
+        wp_enqueue_script(
+            'png-urgent-ui',
+            get_template_directory_uri() . '/assets/js/urgent-ui.js',
+            array(),
+            png_theme_urgent_asset_version( 'assets/js/urgent-ui.js' ),
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'png_theme_urgent_assets', 40 );
+
+if ( ! function_exists( 'png_theme_get_page_url' ) ) {
+    function png_theme_get_page_url( $slug, $fallback = '/' ) {
+        $page = get_page_by_path( $slug );
+
+        if ( $page ) {
+            return get_permalink( $page );
+        }
+
+        return home_url( $fallback );
+    }
+}
+
+if ( ! function_exists( 'png_theme_render_ad_slot_safe' ) ) {
+    function png_theme_render_ad_slot_safe( $slot ) {
+        if ( function_exists( 'png_core_render_ad_slot' ) ) {
+            png_core_render_ad_slot( $slot );
+            return;
+        }
+
+        echo '<div class="png-ad-slot png-ad-slot--empty" aria-hidden="true"></div>';
+    }
+}
+
+if ( ! function_exists( 'png_theme_reading_time' ) ) {
+    function png_theme_reading_time( $post_id = null ) {
+        $post_id = $post_id ? $post_id : get_the_ID();
+        $content = get_post_field( 'post_content', $post_id );
+        $words   = str_word_count( wp_strip_all_tags( $content ) );
+        $minutes = max( 1, (int) ceil( $words / 220 ) );
+
+        return sprintf( _n( '%s min read', '%s mins read', $minutes, 'punch-nextgen' ), number_format_i18n( $minutes ) );
+    }
+}

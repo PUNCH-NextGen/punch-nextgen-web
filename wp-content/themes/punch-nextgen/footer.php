@@ -1,34 +1,59 @@
 <?php
 /**
- * The template for displaying the footer
- *
- * Contains the closing of the #content div and all content after.
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package Punch_NextGen
+ * Punch NextGen footer.
  */
 
 ?>
 
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'punch-nextgen' ) ); ?>">
-				<?php
-				/* translators: %s: CMS name, i.e. WordPress. */
-				printf( esc_html__( 'Proudly powered by %s', 'punch-nextgen' ), 'WordPress' );
-				?>
-			</a>
-			<span class="sep"> | </span>
-				<?php
-				/* translators: 1: Theme name, 2: Theme author. */
-				printf( esc_html__( 'Theme: %1$s by %2$s.', 'punch-nextgen' ), 'punch-nextgen', '<a href="http://underscores.me/">PUNCH Nigeria Limited</a>' );
-				?>
-		</div><!-- .site-info -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
+<footer class="png-footer">
+    <div class="png-container png-footer__grid">
+        <div class="png-footer__brand">
+            <a class="png-brand png-brand--footer" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                <span class="png-brand__mark">PN</span>
+                <span class="png-brand__text">
+                    <strong>Punch</strong>
+                    <span>NextGen</span>
+                </span>
+            </a>
+            <p><?php esc_html_e( 'A youth-focused learning and news platform connecting classroom knowledge with real-world stories.', 'punch-nextgen' ); ?></p>
+        </div>
+
+        <div class="png-footer__col">
+            <h2><?php esc_html_e( 'Explore', 'punch-nextgen' ); ?></h2>
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'punch-nextgen' ); ?></a>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'leaderboards', '/leaderboards/' ) ); ?>"><?php esc_html_e( 'Leaderboards', 'punch-nextgen' ); ?></a>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'crack-this-lite', '/crack-this-lite/' ) ); ?>"><?php esc_html_e( 'Crack This Lite', 'punch-nextgen' ); ?></a>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'school-showcase', '/school-showcase/' ) ); ?>"><?php esc_html_e( 'School Showcase', 'punch-nextgen' ); ?></a>
+        </div>
+
+        <div class="png-footer__col">
+            <h2><?php esc_html_e( 'For Schools', 'punch-nextgen' ); ?></h2>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'teacher-guide-portal', '/teacher-guide-portal/' ) ); ?>"><?php esc_html_e( 'Teacher Guide Portal', 'punch-nextgen' ); ?></a>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'my-profile', '/my-profile/' ) ); ?>"><?php esc_html_e( 'Student Profile', 'punch-nextgen' ); ?></a>
+            <a href="<?php echo esc_url( png_theme_get_page_url( 'contact-feedback', '/contact-feedback/' ) ); ?>"><?php esc_html_e( 'Contact / Feedback', 'punch-nextgen' ); ?></a>
+        </div>
+
+        <div class="png-footer__col">
+            <h2><?php esc_html_e( 'Categories', 'punch-nextgen' ); ?></h2>
+            <?php
+            foreach ( array( 'News', 'Culture & Trends', 'Campus & School Life', 'Money & Life Skills', 'Fact Check' ) as $category_name ) {
+                $term = get_term_by( 'name', $category_name, 'category' );
+
+                if ( $term && ! is_wp_error( $term ) ) {
+                    echo '<a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $category_name ) . '</a>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+
+    <div class="png-footer__bottom">
+        <div class="png-container">
+            <p>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php esc_html_e( 'Punch NextGen. All rights reserved.', 'punch-nextgen' ); ?></p>
+        </div>
+    </div>
+</footer>
 
 <?php wp_footer(); ?>
-
 </body>
 </html>
