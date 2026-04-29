@@ -1,0 +1,113 @@
+/**
+ * Punch NextGen Core public components.
+ */
+.png-core-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 22px;
+    margin: 24px 0;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(15,23,42,.05);
+}
+.png-core-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.png-core-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 18px;
+    background: #fff;
+}
+.png-core-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 0;
+    background: #373435;
+    color: #fff !important;
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+.png-core-button-secondary { background: #fcb92e; color: #373435 !important; }
+.png-core-muted { color: #6b7280; }
+.png-core-success { color: #166534; background: #dcfce7; padding: 10px 12px; border-radius: 10px; }
+.png-core-warning { color: #92400e; background: #fef3c7; padding: 10px 12px; border-radius: 10px; }
+.png-core-form {
+    display: grid;
+    gap: 14px;
+}
+.png-core-form label {
+    display: grid;
+    gap: 6px;
+    font-weight: 700;
+}
+.png-core-form input,
+.png-core-form select,
+.png-core-form textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+.png-core-hp { position: absolute !important; left: -9999px !important; opacity: 0 !important; }
+.png-core-auth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.png-core-choice {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+}
+.png-core-result {
+    margin: 12px 0;
+}
+.png-core-result span,
+.png-core-result strong {
+    display: inline-block;
+    margin-right: 8px;
+}
+.png-core-result-bar {
+    height: 10px;
+    background: #f3f4f6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.png-core-result-bar i {
+    display: block;
+    height: 100%;
+    background: #fcb92e;
+}
+.png-core-ad-slot {
+    margin: 24px 0;
+    text-align: center;
+    border: 1px dashed #d1d5db;
+    padding: 12px;
+    border-radius: 12px;
+}
+.png-core-ad-label {
+    display: block;
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.png-core-table-wrap { overflow-x: auto; }
+.png-core-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.png-core-table th,
+.png-core-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}

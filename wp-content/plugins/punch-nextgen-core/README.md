@@ -1,41 +1,29 @@
 # Punch NextGen Core
 
-Core platform plugin for the Punch NextGen web platform.
+Core WordPress plugin for Punch NextGen.
 
-## Handles
+## Included in this build
 
+- Roles and capabilities
 - Custom post types
 - Custom taxonomies
-- Roles and capabilities
-- Student profiles
-- Teacher accounts
-- School management
-- Academic terms
-- School subscriptions
-- Holiday subscriptions
-- Teacher guide portal
-- End-of-story polls
-- Crack This Lite
-- Digital comics
-- Reading missions
-- Points ledger
-- Badges
-- User leaderboards
-- School leaderboards
-- Comment rules
-- Contact/feedback messages
+- ACF local field groups
+- Required frontend pages
+- Admin menu and responsive admin dashboard
+- School/term/subscription access helpers
+- Teacher account creation
+- Teacher guide portal and download tracking
+- End-of-story poll rendering and voting
+- Digital comic auto-append after stories
+- Crack This Lite submissions and answer reveal
+- Reading missions and points ledger
+- User and school leaderboards
+- Contact/feedback form and storage
+- Comment blocked-word filter and limited participation points
 - Controlled ad slots
-- Cash reward achievements
-- Reports
-- Admin settings
-- REST/AJAX endpoints
+- Rewards/winners content model
+- Reports overview
 
-## Does not handle
+## Design principle
 
-- Theme design
-- Header/footer layout
-- Homepage visual UI
-- Article visual UI
-- Mobile styling
-- Upload storage
-- SEO plugin settings
+The plugin is the platform engine. The theme remains responsible for visual layout.
