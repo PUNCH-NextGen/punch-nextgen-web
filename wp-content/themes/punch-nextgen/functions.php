@@ -273,3 +273,276 @@ if ( ! function_exists( 'png_theme_reading_time' ) ) {
         return sprintf( _n( '%s min read', '%s mins read', $minutes, 'punch-nextgen' ), number_format_i18n( $minutes ) );
     }
 }
+
+/**
+ * Punch NextGen logo image URL.
+ * Replace this later with the final logo URL if needed.
+ */
+if ( ! function_exists( 'png_theme_logo_url' ) ) {
+    function png_theme_logo_url() {
+        $logo_file = get_template_directory() . '/assets/images/punch-nextgen-logo.svg';
+        $version   = file_exists( $logo_file ) ? filemtime( $logo_file ) : time();
+
+        return get_template_directory_uri() . '/assets/images/punch-nextgen-logo.svg?v=' . $version;
+    }
+}
+
+/**
+ * Render homepage School Showcase preview.
+ * Uses the core plugin helper if available, otherwise falls back to the latest published School CPT.
+ */
+if ( ! function_exists( 'png_theme_render_home_school_showcase' ) ) {
+    function png_theme_render_home_school_showcase() {
+        if ( function_exists( 'png_core_render_school_showcase_preview' ) ) {
+            png_core_render_school_showcase_preview();
+            return;
+        }
+
+        if ( ! post_type_exists( 'png_school' ) ) {
+            echo '<p class="png-muted">' . esc_html__( 'School showcase content will appear here.', 'punch-nextgen' ) . '</p>';
+            return;
+        }
+
+        $school_query = new WP_Query(
+            array(
+                'post_type'      => 'png_school',
+                'posts_per_page' => 1,
+                'post_status'    => 'publish',
+            )
+        );
+
+        if ( ! $school_query->have_posts() ) {
+            echo '<p class="png-muted">' . esc_html__( 'School showcase content will appear here.', 'punch-nextgen' ) . '</p>';
+            return;
+        }
+
+        echo '<div class="png-school-showcase-card">';
+
+        while ( $school_query->have_posts() ) {
+            $school_query->the_post();
+
+            $school_location = '';
+            $location_terms  = get_the_terms( get_the_ID(), 'png_school_location' );
+
+            if ( ! empty( $location_terms ) && ! is_wp_error( $location_terms ) ) {
+                $school_location = $location_terms[0]->name;
+            }
+
+            $official_name = '';
+
+            if ( function_exists( 'get_field' ) ) {
+                $official_name = get_field( 'png_school_official_name', get_the_ID() );
+            }
+
+            if ( empty( $official_name ) ) {
+                $official_name = get_the_title();
+            }
+            ?>
+
+            <article class="png-school-showcase-card__inner">
+                <a class="png-school-showcase-card__image" href="<?php the_permalink(); ?>">
+                    <?php if ( has_post_thumbnail() ) : ?>
+                        <?php the_post_thumbnail( 'png_card' ); ?>
+                    <?php else : ?>
+                        <span><?php esc_html_e( 'School Showcase', 'punch-nextgen' ); ?></span>
+                    <?php endif; ?>
+                </a>
+
+                <div class="png-school-showcase-card__content">
+                    <?php if ( $school_location ) : ?>
+                        <span class="png-chip"><?php echo esc_html( $school_location ); ?></span>
+                    <?php else : ?>
+                        <span class="png-chip"><?php esc_html_e( 'Featured School', 'punch-nextgen' ); ?></span>
+                    <?php endif; ?>
+
+                    <h3><a href="<?php the_permalink(); ?>"><?php echo esc_html( $official_name ); ?></a></h3>
+
+                    <p>
+                        <?php
+                        $summary = has_excerpt() ? get_the_excerpt() : get_the_content();
+                        echo esc_html( wp_trim_words( $summary, 24 ) );
+                        ?>
+                    </p>
+
+                    <a class="png-read-more" href="<?php the_permalink(); ?>">
+                        <?php esc_html_e( 'View school', 'punch-nextgen' ); ?>
+                    </a>
+                </div>
+            </article>
+
+            <?php
+        }
+
+        echo '</div>';
+
+        wp_reset_postdata();
+    }
+}
+
+/**
+ * Get ACF value safely, with post meta fallback.
+ */
+if ( ! function_exists( 'png_theme_get_field_value' ) ) {
+    function png_theme_get_field_value( $field_name, $post_id = null ) {
+        $post_id = $post_id ? $post_id : get_the_ID();
+
+        if ( function_exists( 'get_field' ) ) {
+            $value = get_field( $field_name, $post_id );
+
+            if ( '' !== $value && null !== $value && false !== $value ) {
+                return $value;
+            }
+        }
+
+        return get_post_meta( $post_id, $field_name, true );
+    }
+}
+
+/**
+ * Homepage School Showcase card.
+ */
+if ( ! function_exists( 'png_theme_render_home_school_showcase_v2' ) ) {
+    function png_theme_render_home_school_showcase_v2() {
+        if ( ! post_type_exists( 'png_school' ) ) {
+            echo '<p class="png-muted">' . esc_html__( 'School showcase content will appear here.', 'punch-nextgen' ) . '</p>';
+            return;
+        }
+
+        $school_query = new WP_Query(
+            array(
+                'post_type'      => 'png_school',
+                'posts_per_page' => 1,
+                'post_status'    => 'publish',
+            )
+        );
+
+        if ( ! $school_query->have_posts() ) {
+            echo '<p class="png-muted">' . esc_html__( 'School showcase content will appear here.', 'punch-nextgen' ) . '</p>';
+            return;
+        }
+
+        while ( $school_query->have_posts() ) :
+            $school_query->the_post();
+
+            $official_name = png_theme_get_field_value( 'png_school_official_name', get_the_ID() );
+            $official_name = $official_name ? $official_name : get_the_title();
+
+            $summary = has_excerpt() ? get_the_excerpt() : get_the_content();
+
+            $location = '';
+            $locations = get_the_terms( get_the_ID(), 'png_school_location' );
+            if ( ! empty( $locations ) && ! is_wp_error( $locations ) ) {
+                $location = $locations[0]->name;
+            }
+            ?>
+            <article class="png-feature-card-v2 png-feature-card-v2--school">
+                <a class="png-feature-card-v2__media" href="<?php the_permalink(); ?>">
+                    <?php if ( has_post_thumbnail() ) : ?>
+                        <?php the_post_thumbnail( 'png_card' ); ?>
+                    <?php else : ?>
+                        <span>PN</span>
+                    <?php endif; ?>
+                </a>
+
+                <div class="png-feature-card-v2__body">
+                    <span class="png-mini-label">
+                        <?php echo esc_html( $location ? $location : __( 'Featured School', 'punch-nextgen' ) ); ?>
+                    </span>
+
+                    <h3><a href="<?php the_permalink(); ?>"><?php echo esc_html( $official_name ); ?></a></h3>
+
+                    <p><?php echo esc_html( wp_trim_words( $summary, 22 ) ); ?></p>
+
+                    <a class="png-arrow-link" href="<?php the_permalink(); ?>">
+                        <?php esc_html_e( 'View school showcase', 'punch-nextgen' ); ?>
+                    </a>
+                </div>
+            </article>
+            <?php
+        endwhile;
+
+        wp_reset_postdata();
+    }
+}
+
+/**
+ * Homepage Crack This Lite card.
+ */
+if ( ! function_exists( 'png_theme_render_home_crack_this_v2' ) ) {
+    function png_theme_render_home_crack_this_v2() {
+        if ( ! post_type_exists( 'png_crack_this' ) ) {
+            ?>
+            <div class="png-crack-card-v2">
+                <span class="png-mini-label"><?php esc_html_e( 'Weekly Challenge', 'punch-nextgen' ); ?></span>
+                <h3><?php esc_html_e( 'Crack This Lite is loading soon.', 'punch-nextgen' ); ?></h3>
+                <p><?php esc_html_e( 'A light weekly puzzle will appear here for students and young readers.', 'punch-nextgen' ); ?></p>
+                <a class="png-arrow-link" href="<?php echo esc_url( png_theme_get_page_url( 'crack-this-lite', '/crack-this-lite/' ) ); ?>">
+                    <?php esc_html_e( 'Try it', 'punch-nextgen' ); ?>
+                </a>
+            </div>
+            <?php
+            return;
+        }
+
+        $crack_query = new WP_Query(
+            array(
+                'post_type'      => 'png_crack_this',
+                'posts_per_page' => 1,
+                'post_status'    => 'publish',
+            )
+        );
+
+        if ( ! $crack_query->have_posts() ) {
+            ?>
+            <div class="png-crack-card-v2">
+                <span class="png-mini-label"><?php esc_html_e( 'Weekly Challenge', 'punch-nextgen' ); ?></span>
+                <h3><?php esc_html_e( 'A new puzzle will appear here.', 'punch-nextgen' ); ?></h3>
+                <p><?php esc_html_e( 'Publish a Crack This Lite item to activate this section.', 'punch-nextgen' ); ?></p>
+                <a class="png-arrow-link" href="<?php echo esc_url( png_theme_get_page_url( 'crack-this-lite', '/crack-this-lite/' ) ); ?>">
+                    <?php esc_html_e( 'Open Crack This Lite', 'punch-nextgen' ); ?>
+                </a>
+            </div>
+            <?php
+            return;
+        }
+
+        while ( $crack_query->have_posts() ) :
+            $crack_query->the_post();
+
+            $points = png_theme_get_field_value( 'png_points_value', get_the_ID() );
+            $reveal = png_theme_get_field_value( 'png_reveal_date', get_the_ID() );
+            ?>
+            <article class="png-crack-card-v2">
+                <div class="png-crack-card-v2__top">
+                    <span class="png-mini-label"><?php esc_html_e( 'Weekly Challenge', 'punch-nextgen' ); ?></span>
+
+                    <?php if ( $points ) : ?>
+                        <span class="png-points-pill">
+                            <?php echo esc_html( sprintf( __( '%s pts', 'punch-nextgen' ), $points ) ); ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+
+                <p>
+                    <?php
+                    $summary = has_excerpt() ? get_the_excerpt() : get_the_content();
+                    echo esc_html( wp_trim_words( $summary, 26 ) );
+                    ?>
+                </p>
+
+                <?php if ( $reveal ) : ?>
+                    <small><?php echo esc_html( sprintf( __( 'Answer reveal: %s', 'punch-nextgen' ), $reveal ) ); ?></small>
+                <?php endif; ?>
+
+                <a class="png-arrow-link" href="<?php the_permalink(); ?>">
+                    <?php esc_html_e( 'Try the puzzle', 'punch-nextgen' ); ?>
+                </a>
+            </article>
+            <?php
+        endwhile;
+
+        wp_reset_postdata();
+    }
+}

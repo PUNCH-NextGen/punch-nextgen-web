@@ -25,16 +25,8 @@
     </div>
 
     <div class="png-container png-header__main">
-        <a class="png-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-            <?php if ( has_custom_logo() ) : ?>
-                <span class="png-brand__logo"><?php the_custom_logo(); ?></span>
-            <?php else : ?>
-                <span class="png-brand__mark">PN</span>
-                <span class="png-brand__text">
-                    <strong>Punch</strong>
-                    <span>NextGen</span>
-                </span>
-            <?php endif; ?>
+        <a class="png-brand png-brand--image" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+            <img src="<?php echo esc_url( png_theme_logo_url() ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
         </a>
 
         <button class="png-nav-toggle" type="button" aria-controls="png-primary-nav" aria-expanded="false">
@@ -55,11 +47,12 @@
                         ?>
                         <ul class="png-primary-nav__list">
                             <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
-                            <li><a href="<?php echo esc_url( get_category_link( get_cat_ID( 'News' ) ) ); ?>">News</a></li>
-                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'leaderboards', '/leaderboards/' ) ); ?>">Leaderboards</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'school-showcase', '/school-showcase/' ) ); ?>">School Showcase</a></li>
                             <li><a href="<?php echo esc_url( png_theme_get_page_url( 'crack-this-lite', '/crack-this-lite/' ) ); ?>">Crack This Lite</a></li>
-                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'teacher-guide-portal', '/teacher-guide-portal/' ) ); ?>">Teacher Guide</a></li>
-                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'contact-feedback', '/contact-feedback/' ) ); ?>">Contact</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'leaderboards', '/leaderboards/' ) ); ?>">Leaderboards</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'teacher-guide-portal', '/teacher-guide-portal/' ) ); ?>">Teacher Guide Portal</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'my-profile', '/my-profile/' ) ); ?>">My Profile</a></li>
+                            <li><a href="<?php echo esc_url( png_theme_get_page_url( 'contact-feedback', '/contact-feedback/' ) ); ?>">Contact / Feedback</a></li>
                         </ul>
                         <?php
                     },
