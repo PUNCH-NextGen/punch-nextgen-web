@@ -176,3 +176,8 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+
+/**
+ * Punch NextGen theme additions.
+ */
+require get_template_directory() . '/inc/nextgen-loader.php';

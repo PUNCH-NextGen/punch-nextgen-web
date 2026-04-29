@@ -14,3 +14,6 @@ wp-content/debug.log
 *.log
 .DS_Store
 Thumbs.db
+node_modules/
+vendor/
+wp-content/themes/*.zip
