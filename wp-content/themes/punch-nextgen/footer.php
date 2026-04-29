@@ -8,14 +8,11 @@
 <footer class="png-footer">
     <div class="png-container png-footer__grid">
         <div class="png-footer__brand">
-            <a class="png-brand png-brand--footer" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-                <span class="png-brand__mark">PN</span>
-                <span class="png-brand__text">
-                    <strong>Punch</strong>
-                    <span>NextGen</span>
-                </span>
+            <a class="png-footer-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                <img src="<?php echo esc_url( png_theme_logo_url() ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
             </a>
-            <p><?php esc_html_e( 'A youth-focused learning and news platform connecting classroom knowledge with real-world stories.', 'punch-nextgen' ); ?></p>
+
+            <p><?php esc_html_e( 'A youth-focused news and learning platform connecting classroom knowledge with real-world stories.', 'punch-nextgen' ); ?></p>
         </div>
 
         <div class="png-footer__col">
